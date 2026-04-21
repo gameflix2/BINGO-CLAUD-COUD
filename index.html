@@ -1,166 +1,1903 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <title>Gameflix | Imersão Total</title>
-    <style>
-        :root { --netflix-red: #E50914; --netflix-black: #141414; }
-        body { background-color: var(--netflix-black); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        
-        /* Efeito de Vidro e Gradientes */
-        .hero-gradient { background: linear-gradient(to top, #141414 10%, transparent 60%), linear-gradient(to right, #141414 20%, transparent 60%); }
-        .modal-overlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
-        
-        /* Animação dos Cards */
-        .game-card { transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .game-card:hover { transform: scale(1.15); z-index: 50; box-shadow: 0 10px 20px rgba(0,0,0,0.6); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXO BINGO — Ultra Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #050508;
+    --bg-mid: #0a0a12;
+    --bg-surface: #10101e;
+    --bg-card: #13132200;
+    --neon-blue: #00d4ff;
+    --neon-green: #00ff88;
+    --neon-purple: #bf00ff;
+    --neon-gold: #ffd700;
+    --neon-red: #ff2244;
+    --neon-pink: #ff00aa;
+    --text-primary: #e8eaf6;
+    --text-secondary: #7b7f9e;
+    --text-muted: #3d3f5c;
+    --glass-bg: rgba(255,255,255,0.03);
+    --glass-border: rgba(255,255,255,0.07);
+    --glass-hover: rgba(255,255,255,0.06);
+    --glow-blue: 0 0 20px rgba(0,212,255,0.4);
+    --glow-green: 0 0 20px rgba(0,255,136,0.4);
+    --glow-gold: 0 0 20px rgba(255,215,0,0.4);
+    --glow-purple: 0 0 20px rgba(191,0,255,0.4);
+  }
 
-        /* Esconder Scrollbar */
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        
-        /* Animação de Entrada do Modal */
-        @keyframes modalFade {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .modal-content { animation: modalFade 0.4s ease-out forwards; }
-    </style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,212,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(191,0,255,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  /* HEADER */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 60px;
+    background: rgba(5,5,8,0.92);
+    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+  }
+
+  .logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--neon-blue);
+    text-shadow: var(--glow-blue);
+    flex-shrink: 0;
+  }
+
+  .logo span { color: var(--neon-purple); }
+
+  .nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    margin-left: 16px;
+  }
+
+  .nav-item {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover { color: var(--text-primary); background: var(--glass-bg); }
+  .nav-item.active {
+    color: var(--neon-blue);
+    background: rgba(0,212,255,0.08);
+    border-color: rgba(0,212,255,0.2);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .balance-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+  }
+
+  .balance-amount { color: var(--neon-gold); font-weight: 700; }
+
+  .eye-btn {
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 14px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .eye-btn:hover { color: var(--text-secondary); }
+
+  .btn-deposit {
+    background: linear-gradient(135deg, var(--neon-green), #00cc6a);
+    color: #001a0d;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 7px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: var(--glow-green);
+    transition: all 0.2s;
+  }
+  .btn-deposit:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(0,255,136,0.6); }
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    border: 2px solid rgba(191,0,255,0.4);
+  }
+
+  .notif-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .notif-btn:hover { background: var(--glass-hover); }
+  .notif-dot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon-red);
+    box-shadow: 0 0 8px var(--neon-red);
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    padding-top: 60px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LOBBY / JACKPOT CAROUSEL */
+  .jackpot-banner {
+    background: linear-gradient(90deg, rgba(255,215,0,0.05), rgba(191,0,255,0.05), rgba(0,212,255,0.05));
+    border-bottom: 1px solid rgba(255,215,0,0.1);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
+  }
+
+  .jackpot-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--neon-gold);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .jackpot-ticker {
+    display: flex;
+    gap: 32px;
+    animation: tickerScroll 30s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .jackpot-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .jackpot-item-name { font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: 1px; }
+  .jackpot-item-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--neon-gold);
+    text-shadow: var(--glow-gold);
+  }
+  .jackpot-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--neon-green); box-shadow: var(--glow-green); animation: pulse 1.5s ease-in-out infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+
+  /* GAME AREA */
+  .game-area {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 0;
+    height: calc(100vh - 60px - 42px);
+  }
+
+  /* LEFT PANEL — CARTELAS */
+  .panel-left {
+    background: rgba(8,8,16,0.8);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .auto-dab-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .toggle-switch {
+    width: 36px;
+    height: 20px;
+    background: var(--neon-green);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: var(--glow-green);
+    transition: all 0.3s;
+  }
+
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #001a0d;
+    top: 3px;
+    right: 3px;
+    transition: all 0.3s;
+  }
+
+  .quick-buy {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .buy-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 6px 0;
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .buy-btn:hover { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); color: var(--neon-blue); }
+  .buy-btn.max {
+    background: rgba(0,255,136,0.1);
+    border-color: rgba(0,255,136,0.3);
+    color: var(--neon-green);
+  }
+
+  .cards-scroll { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .cards-scroll::-webkit-scrollbar { width: 3px; }
+  .cards-scroll::-webkit-scrollbar-track { background: transparent; }
+  .cards-scroll::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 3px; }
+
+  .bingo-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bingo-card.hot {
+    border-color: rgba(255,215,0,0.4);
+    background: rgba(255,215,0,0.04);
+    box-shadow: 0 0 20px rgba(255,215,0,0.15);
+  }
+
+  .bingo-card.hot::before {
+    content: 'QUENTE';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--neon-gold);
+    font-weight: 700;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .card-id { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); }
+  .card-progress { font-size: 11px; color: var(--neon-green); font-weight: 700; }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+  }
+
+  .card-col-header {
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    padding: 3px 0;
+  }
+
+  .B { color: #4fc3f7; }
+  .I { color: #ce93d8; }
+  .N { color: var(--neon-gold); }
+  .G { color: var(--neon-green); }
+  .O { color: #ff8a65; }
+
+  .card-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    transition: all 0.3s;
+  }
+
+  .card-cell.dabbed {
+    background: rgba(0,212,255,0.15);
+    border-color: rgba(0,212,255,0.4);
+    color: var(--neon-blue);
+    box-shadow: 0 0 8px rgba(0,212,255,0.3);
+  }
+
+  .card-cell.free {
+    background: rgba(191,0,255,0.15);
+    border-color: rgba(191,0,255,0.4);
+    color: var(--neon-purple);
+  }
+
+  .card-cell.near-win {
+    background: rgba(255,215,0,0.15);
+    border-color: rgba(255,215,0,0.5);
+    color: var(--neon-gold);
+    animation: cellGlow 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes cellGlow {
+    from { box-shadow: 0 0 5px rgba(255,215,0,0.3); }
+    to { box-shadow: 0 0 15px rgba(255,215,0,0.7); }
+  }
+
+  /* CENTER PANEL — SORTEIO */
+  .panel-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .room-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .room-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--neon-blue);
+    text-shadow: var(--glow-blue);
+    letter-spacing: 2px;
+  }
+
+  .room-badge {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    color: var(--neon-green);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .players-count { margin-left: auto; font-size: 13px; color: var(--text-secondary); }
+  .players-count strong { color: var(--text-primary); font-family: 'Space Mono', monospace; }
+
+  /* GLOBE */
+  .globe-container {
+    width: 240px;
+    height: 240px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .globe-outer {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(0,212,255,0.15), rgba(0,212,255,0.02) 60%, transparent);
+    border: 2px solid rgba(0,212,255,0.2);
+    box-shadow: 0 0 60px rgba(0,212,255,0.15), inset 0 0 60px rgba(0,212,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: globeSpin 20s linear infinite;
+  }
+
+  @keyframes globeSpin {
+    from { box-shadow: 0 0 60px rgba(0,212,255,0.15), inset 0 0 60px rgba(0,212,255,0.05); }
+    50% { box-shadow: 0 0 80px rgba(191,0,255,0.2), inset 0 0 60px rgba(191,0,255,0.05); }
+    to { box-shadow: 0 0 60px rgba(0,212,255,0.15), inset 0 0 60px rgba(0,212,255,0.05); }
+  }
+
+  .globe-ring {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,212,255,0.1);
+    animation: ringRotate 8s linear infinite;
+    border-style: dashed;
+  }
+
+  .globe-ring:nth-child(2) {
+    width: 280px;
+    height: 280px;
+    border-color: rgba(191,0,255,0.08);
+    animation-duration: 12s;
+    animation-direction: reverse;
+  }
+
+  @keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .current-ball {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff5, rgba(0,212,255,0.8), rgba(0,100,180,0.9));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 40px rgba(0,212,255,0.6), inset 0 -10px 20px rgba(0,0,80,0.4);
+    animation: ballFloat 3s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+    cursor: default;
+  }
+
+  @keyframes ballFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.02); }
+  }
+
+  .ball-letter {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.9);
+    line-height: 1;
+  }
+
+  .ball-number {
+    font-family: 'Orbitron', monospace;
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  /* HISTORY */
+  .ball-history {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 500px;
+  }
+
+  .hist-ball {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid;
+    transition: all 0.3s;
+  }
+
+  .hist-ball.b { background: rgba(79,195,247,0.1); border-color: rgba(79,195,247,0.4); color: #4fc3f7; }
+  .hist-ball.i { background: rgba(206,147,216,0.1); border-color: rgba(206,147,216,0.4); color: #ce93d8; }
+  .hist-ball.n { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.4); color: var(--neon-gold); }
+  .hist-ball.g { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.4); color: var(--neon-green); }
+  .hist-ball.o { background: rgba(255,138,101,0.1); border-color: rgba(255,138,101,0.4); color: #ff8a65; }
+
+  /* PRIZES */
+  .prizes-panel {
+    width: 100%;
+    max-width: 540px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .prize-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .prize-card.active {
+    border-color: rgba(255,215,0,0.4);
+    background: rgba(255,215,0,0.05);
+    box-shadow: var(--glow-gold);
+  }
+
+  .prize-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .prize-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--neon-gold);
+    text-shadow: var(--glow-gold);
+  }
+
+  .prize-card.active .prize-name { color: var(--neon-gold); }
+
+  /* PROBABILITY BAR */
+  .prob-section {
+    width: 100%;
+    max-width: 540px;
+  }
+
+  .prob-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .prob-value { color: var(--neon-green); font-family: 'Space Mono', monospace; }
+
+  .prob-track {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .prob-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+    box-shadow: var(--glow-green);
+    transition: width 1s ease;
+    width: 67%;
+  }
+
+  /* WIN NOTIFICATION */
+  .win-toast {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--neon-green);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* COUNTDOWN */
+  .countdown-widget {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(255,34,68,0.08);
+    border: 1px solid rgba(255,34,68,0.2);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 540px;
+  }
+
+  .countdown-label { font-size: 12px; color: var(--neon-red); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .countdown-timer {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--neon-red);
+    text-shadow: 0 0 20px rgba(255,34,68,0.5);
+    margin-left: auto;
+  }
+
+  /* RIGHT PANEL — CHAT + STATS */
+  .panel-right {
+    background: rgba(8,8,16,0.8);
+    border-left: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .panel-tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+
+  .panel-tab.active {
+    color: var(--neon-blue);
+    border-bottom-color: var(--neon-blue);
+  }
+
+  .chat-area { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-area::-webkit-scrollbar { width: 3px; }
+  .chat-area::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 3px; }
+
+  .chat-msg {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .chat-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .chat-avatar.host {
+    background: linear-gradient(135deg, var(--neon-gold), #ff8c00);
+    box-shadow: var(--glow-gold);
+  }
+
+  .chat-content { flex: 1; }
+
+  .chat-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .chat-name .host-badge {
+    background: var(--neon-gold);
+    color: #000;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 9px;
+    margin-left: 4px;
+  }
+
+  .chat-text {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  .chat-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .chat-reactions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .reaction {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reaction:hover { background: var(--glass-hover); transform: scale(1.1); }
+
+  .chat-input-area {
+    border-top: 1px solid var(--glass-border);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: rgba(0,212,255,0.4); }
+  .chat-input::placeholder { color: var(--text-muted); }
+
+  .send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--neon-blue);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .send-btn:hover { background: rgba(0,212,255,0.2); box-shadow: var(--glow-blue); }
+
+  /* STATS VIEW */
+  .stats-content { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+  .stats-content::-webkit-scrollbar { width: 3px; }
+
+  .stat-section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .hot-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .hot-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .hot-num.hot { background: rgba(255,34,68,0.15); border: 1px solid rgba(255,34,68,0.4); color: var(--neon-red); }
+  .hot-num.cold { background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.15); color: var(--text-muted); }
+
+  .ranking-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+  }
+
+  .rank-pos {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 20px;
+    text-align: center;
+  }
+
+  .rank-pos.gold { color: var(--neon-gold); }
+  .rank-pos.silver { color: #aaa; }
+  .rank-pos.bronze { color: #cd7f32; }
+
+  .rank-name { flex: 1; font-size: 13px; font-weight: 600; }
+  .rank-cards { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-secondary); }
+
+  /* RTP BAR */
+  .rtp-bar {
+    padding: 10px 0;
+  }
+  .rtp-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--neon-green);
+    text-shadow: var(--glow-green);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .rtp-label { text-align: center; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+
+  /* LOBBY VIEW */
+  .lobby-view {
+    padding: 20px;
+  }
+
+  .lobby-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    background: var(--glass-bg);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .filter-chip:hover { color: var(--text-primary); background: var(--glass-hover); }
+  .filter-chip.active { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.4); color: var(--neon-blue); }
+
+  .lobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .room-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .room-card:hover {
+    border-color: rgba(0,212,255,0.3);
+    background: rgba(0,212,255,0.04);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .room-card.featured { border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.03); }
+
+  .room-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+  .room-type-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .room-card-name { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+  .room-card-type { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .room-card-jackpot {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--neon-gold);
+    text-shadow: var(--glow-gold);
+    margin-bottom: 12px;
+  }
+
+  .room-card-jackpot span { font-size: 12px; color: var(--text-muted); font-family: 'Rajdhani', sans-serif; font-weight: 400; }
+
+  .room-card-meta { display: flex; gap: 12px; margin-bottom: 12px; }
+  .room-meta-item { font-size: 12px; color: var(--text-secondary); }
+  .room-meta-item strong { color: var(--text-primary); font-family: 'Space Mono', monospace; }
+
+  .room-countdown { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .room-countdown-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); animation: pulse 1s ease-in-out infinite; }
+  .room-countdown-text { font-size: 12px; color: var(--neon-red); font-weight: 700; font-family: 'Space Mono', monospace; }
+
+  .btn-play {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(191,0,255,0.1));
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--neon-blue);
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    animation: btnPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes btnPulse {
+    0%,100% { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+    50% { box-shadow: 0 0 20px rgba(0,212,255,0.5); }
+  }
+
+  .btn-play:hover { background: rgba(0,212,255,0.2); transform: scale(1.01); }
+
+  /* FLOATING REACTIONS */
+  .floating-reactions {
+    position: fixed;
+    bottom: 80px;
+    right: 300px;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  .float-emoji {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 3s ease-out forwards;
+    bottom: 0;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+  }
+
+  /* BOTTOM STATUS BAR */
+  .status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 36px;
+    background: rgba(5,5,8,0.95);
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .status-item { display: flex; align-items: center; gap: 6px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon-green); box-shadow: var(--glow-green); }
+  .status-live { color: var(--neon-green); font-weight: 700; }
+
+  /* VIEW TOGGLE */
+  .view-buttons {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+  }
+
+  .view-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    color: var(--text-muted);
+  }
+  .view-btn.active { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); color: var(--neon-blue); }
+
+  /* HIDDEN / VIEWS */
+  .view { display: none; }
+  .view.active { display: flex; flex-direction: column; }
+
+  #lobby-view { display: none; }
+  #lobby-view.active { display: block; }
+  #game-view { display: none; }
+  #game-view.active { display: grid; }
+
+  /* Scrollbar global */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+
+  /* Chat tab content */
+  .tab-content { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+  .tab-content.active { display: flex; }
+
+  /* JACKPOT DISPLAY in lobby cards */
+  .lobby-jackpot-strip {
+    background: linear-gradient(90deg, rgba(255,215,0,0.08), rgba(191,0,255,0.08));
+    border: 1px solid rgba(255,215,0,0.15);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .ljack-info { }
+  .ljack-label { font-size: 11px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .ljack-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--neon-gold);
+    text-shadow: 0 0 30px rgba(255,215,0,0.6);
+  }
+  .ljack-btn {
+    background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.1));
+    border: 1px solid rgba(255,215,0,0.4);
+    color: var(--neon-gold);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ljack-btn:hover { box-shadow: var(--glow-gold); }
+</style>
 </head>
 <body>
 
-    <nav id="navbar" class="fixed top-0 w-full z-[100] flex items-center justify-between px-12 py-4 transition-all duration-500">
-        <div class="flex items-center space-x-10">
-            <h1 class="text-red-600 font-bold text-4xl tracking-tighter">GAMEFLIX</h1>
-            <div class="hidden md:flex space-x-5 text-sm">
-                <a href="#" class="hover:text-gray-300 transition">Início</a>
-                <a href="#" class="hover:text-gray-300 transition">Séries de Jogos</a>
-                <a href="#" class="hover:text-gray-300 transition">Lançamentos</a>
-                <a href="#" class="hover:text-gray-300 transition">Minha Lista</a>
-            </div>
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">NEXO<span>BINGO</span></div>
+
+  <nav class="nav">
+    <div class="nav-item active" onclick="showLobby()">🎱 Bingo</div>
+    <div class="nav-item">🎰 Cassino</div>
+    <div class="nav-item">⚡ Promoções</div>
+    <div class="nav-item">👑 VIP</div>
+    <div class="nav-item">💬 Suporte</div>
+  </nav>
+
+  <div class="header-right">
+    <div class="balance-display">
+      <span id="balance-label" class="balance-amount">R$ 1.284,50</span>
+      <button class="eye-btn" onclick="toggleBalance()">👁</button>
+    </div>
+    <button class="btn-deposit">+ Depósito</button>
+    <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+    <div class="avatar" title="Meu Perfil">JR</div>
+  </div>
+</header>
+
+<!-- JACKPOT TICKER -->
+<div class="jackpot-banner">
+  <div class="jackpot-label">🏆 Jackpots</div>
+  <div class="jackpot-ticker">
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">MEGA GALAXY</span><span class="jackpot-item-value">R$ 127.840</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">SPEED RUSH</span><span class="jackpot-item-value">R$ 34.290</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">GOLD FEVER</span><span class="jackpot-item-value">R$ 89.510</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">NEON NIGHTS</span><span class="jackpot-item-value">R$ 22.100</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">ULTRA PRO</span><span class="jackpot-item-value">R$ 258.000</span></div>
+    <!-- duplicated for seamless loop -->
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">MEGA GALAXY</span><span class="jackpot-item-value">R$ 127.840</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">SPEED RUSH</span><span class="jackpot-item-value">R$ 34.290</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">GOLD FEVER</span><span class="jackpot-item-value">R$ 89.510</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">NEON NIGHTS</span><span class="jackpot-item-value">R$ 22.100</span></div>
+    <div class="jackpot-item"><div class="jackpot-pulse"></div><span class="jackpot-item-name">ULTRA PRO</span><span class="jackpot-item-value">R$ 258.000</span></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- LOBBY VIEW -->
+  <div id="lobby-view" class="active">
+    <div class="lobby-view">
+      <!-- Big jackpot strip -->
+      <div class="lobby-jackpot-strip">
+        <div class="ljack-info">
+          <div class="ljack-label">🏆 Jackpot Progressivo do Dia</div>
+          <div class="ljack-value" id="main-jackpot">R$ 258.340</div>
         </div>
-    </nav>
+        <button class="ljack-btn">ENTRAR AGORA →</button>
+      </div>
 
-    <section class="relative h-screen w-full flex items-center">
-        <div class="absolute inset-0 hero-gradient z-10"></div>
-        <img src="https://images8.alphacoders.com/121/1218962.jpg" class="absolute inset-0 w-full h-full object-cover">
-        
-        <div class="relative z-20 px-12 max-w-2xl space-y-6">
-            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/logo.png" class="w-96 drop-shadow-2xl">
-            <div class="flex items-center space-x-3 text-green-400 font-bold">
-                <span>98% Relevante</span>
-                <span class="border border-white/40 px-2 text-white text-xs">18+</span>
-                <span class="text-white font-normal">2022</span>
+      <!-- Filters -->
+      <div class="lobby-filters">
+        <div class="filter-chip active">Todos</div>
+        <div class="filter-chip">⚡ Começando Agora</div>
+        <div class="filter-chip">💰 Prêmios Altos</div>
+        <div class="filter-chip">🏆 Jackpots</div>
+        <div class="filter-chip">🎁 Grátis</div>
+        <div class="filter-chip">90 Bolas</div>
+        <div class="filter-chip">75 Bolas</div>
+        <div class="filter-chip">Speed</div>
+      </div>
+
+      <!-- Room Grid -->
+      <div class="lobby-grid">
+
+        <div class="room-card featured" onclick="enterGame()">
+          <div class="room-card-header">
+            <div class="room-type-icon">🌌</div>
+            <div>
+              <div class="room-card-name">MEGA GALAXY</div>
+              <div class="room-card-type">90 Bolas • Jackpot</div>
             </div>
-            <p class="text-xl text-gray-100 leading-relaxed drop-shadow-md">
-                Desvende os mistérios do poder do Anel Príncipio. Enfrente criaturas colossais e deuses caídos num mundo aberto vasto e punitivo.
-            </p>
-            <div class="flex space-x-4">
-                <button onclick="openModal(1245620, 'Elden Ring', 'O RPG de ação definitivo da FromSoftware.', 'https://cdn.akamai.steamstatic.com/steam/apps/256873520/movie480_vp9.webm')" class="bg-white text-black px-10 py-3 rounded-md font-bold text-lg flex items-center hover:bg-gray-200 transition">
-                    <span class="mr-2">▶</span> Assistir Trailer
-                </button>
-                <button class="bg-gray-500/40 text-white px-10 py-3 rounded-md font-bold text-lg backdrop-blur-md hover:bg-gray-500/20 transition">
-                    ⓘ Mais Informações
-                </button>
-            </div>
+          </div>
+          <div class="room-card-jackpot">R$ 127.840 <span>jackpot</span></div>
+          <div class="room-card-meta">
+            <div class="room-meta-item">👥 <strong>1.247</strong> jogadores</div>
+            <div class="room-meta-item">🎟 <strong>R$2,00</strong>/cartela</div>
+          </div>
+          <div class="room-countdown"><div class="room-countdown-dot"></div><span class="room-countdown-text">00:02:14</span><span style="font-size:11px;color:var(--text-muted);margin-left:4px">próxima rodada</span></div>
+          <button class="btn-play">▶ Jogar Agora</button>
         </div>
-    </section>
 
-    <main class="relative z-30 -mt-24 px-12 space-y-16 pb-20">
-        
-        <section>
-            <h2 class="text-2xl font-bold mb-6 tracking-wide">Populares na Gameflix</h2>
-            <div class="flex space-x-3 overflow-x-scroll scrollbar-hide py-6" id="trilho-populares">
-                </div>
-        </section>
-
-        <section>
-            <h2 class="text-2xl font-bold mb-6 tracking-wide">Adrenalina Pura</h2>
-            <div class="flex space-x-3 overflow-x-scroll scrollbar-hide py-6" id="trilho-acao">
-                </div>
-        </section>
-    </main>
-
-    <div id="gameModal" class="hidden fixed inset-0 z-[200] modal-overlay flex justify-center items-center p-4">
-        <div class="modal-content bg-[#181818] w-full max-w-4xl max-h-[90vh] rounded-lg overflow-y-auto relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-4 right-4 z-50 bg-black/50 w-10 h-10 rounded-full text-2xl hover:bg-black/80 transition">✕</button>
-            
-            <div class="relative w-full aspect-video">
-                <video id="modalVideo" class="w-full h-full object-cover" autoplay controls muted></video>
-                <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-[#181818] to-transparent">
-                    <h2 id="modalTitle" class="text-4xl font-bold mb-4 tracking-tight"></h2>
-                    <button id="downloadBtn" class="bg-red-600 text-white px-12 py-3 rounded font-bold text-xl hover:bg-red-700 transition uppercase tracking-widest">
-                        Baixar Agora
-                    </button>
-                </div>
+        <div class="room-card" onclick="enterGame()">
+          <div class="room-card-header">
+            <div class="room-type-icon" style="background:rgba(191,0,255,0.1);border-color:rgba(191,0,255,0.2);">⚡</div>
+            <div>
+              <div class="room-card-name">SPEED RUSH</div>
+              <div class="room-card-type">Speed • 30 seg/bola</div>
             </div>
-
-            <div class="p-8 grid grid-cols-3 gap-8">
-                <div class="col-span-2 space-y-4">
-                    <div class="flex items-center space-x-3 text-green-400 font-bold">
-                        <span id="modalMatch">97% Relevante</span>
-                        <span class="border border-white/40 px-2 text-white text-xs">HD / 4K</span>
-                    </div>
-                    <p id="modalDesc" class="text-lg text-gray-300 leading-relaxed"></p>
-                </div>
-                <div class="text-sm text-gray-400 space-y-2">
-                    <p><span class="text-gray-600">Elenco:</span> Você, Jogadores Online</p>
-                    <p><span class="text-gray-600">Gêneros:</span> Acção, RPG, Cooperativo</p>
-                    <p><span class="text-gray-600">Características:</span> Atmosférico, Violento</p>
-                </div>
-            </div>
+          </div>
+          <div class="room-card-jackpot">R$ 34.290 <span>jackpot</span></div>
+          <div class="room-card-meta">
+            <div class="room-meta-item">👥 <strong>892</strong> jogadores</div>
+            <div class="room-meta-item">🎟 <strong>R$1,00</strong>/cartela</div>
+          </div>
+          <div class="room-countdown"><div class="room-countdown-dot"></div><span class="room-countdown-text">00:00:48</span><span style="font-size:11px;color:var(--text-muted);margin-left:4px">próxima rodada</span></div>
+          <button class="btn-play" style="border-color:rgba(191,0,255,0.3);color:var(--neon-purple);">▶ Jogar Agora</button>
         </div>
+
+        <div class="room-card" onclick="enterGame()">
+          <div class="room-card-header">
+            <div class="room-type-icon" style="background:rgba(255,215,0,0.1);border-color:rgba(255,215,0,0.2);">🏆</div>
+            <div>
+              <div class="room-card-name">GOLD FEVER</div>
+              <div class="room-card-type">75 Bolas • Premium</div>
+            </div>
+          </div>
+          <div class="room-card-jackpot">R$ 89.510 <span>jackpot</span></div>
+          <div class="room-card-meta">
+            <div class="room-meta-item">👥 <strong>432</strong> jogadores</div>
+            <div class="room-meta-item">🎟 <strong>R$5,00</strong>/cartela</div>
+          </div>
+          <div class="room-countdown"><div class="room-countdown-dot"></div><span class="room-countdown-text">00:05:30</span><span style="font-size:11px;color:var(--text-muted);margin-left:4px">próxima rodada</span></div>
+          <button class="btn-play" style="border-color:rgba(255,215,0,0.3);color:var(--neon-gold);">▶ Jogar Agora</button>
+        </div>
+
+        <div class="room-card" onclick="enterGame()">
+          <div class="room-card-header">
+            <div class="room-type-icon" style="background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.2);">🎁</div>
+            <div>
+              <div class="room-card-name">FREE PLAY</div>
+              <div class="room-card-type">90 Bolas • Grátis</div>
+            </div>
+          </div>
+          <div class="room-card-jackpot">R$ 500 <span>prêmio</span></div>
+          <div class="room-card-meta">
+            <div class="room-meta-item">👥 <strong>3.102</strong> jogadores</div>
+            <div class="room-meta-item">🎟 <strong>Grátis</strong></div>
+          </div>
+          <div class="room-countdown"><div class="room-countdown-dot"></div><span class="room-countdown-text">00:01:05</span><span style="font-size:11px;color:var(--text-muted);margin-left:4px">próxima rodada</span></div>
+          <button class="btn-play" style="border-color:rgba(0,255,136,0.3);color:var(--neon-green);">▶ Jogar Agora</button>
+        </div>
+
+        <div class="room-card" onclick="enterGame()">
+          <div class="room-card-header">
+            <div class="room-type-icon" style="background:rgba(255,34,68,0.1);border-color:rgba(255,34,68,0.2);">🌙</div>
+            <div>
+              <div class="room-card-name">NEON NIGHTS</div>
+              <div class="room-card-type">80 Bolas • Noturno</div>
+            </div>
+          </div>
+          <div class="room-card-jackpot">R$ 22.100 <span>jackpot</span></div>
+          <div class="room-card-meta">
+            <div class="room-meta-item">👥 <strong>678</strong> jogadores</div>
+            <div class="room-meta-item">🎟 <strong>R$3,00</strong>/cartela</div>
+          </div>
+          <div class="room-countdown"><div class="room-countdown-dot"></div><span class="room-countdown-text">00:08:00</span><span style="font-size:11px;color:var(--text-muted);margin-left:4px">próxima rodada</span></div>
+          <button class="btn-play" style="border-color:rgba(255,34,68,0.3);color:var(--neon-red);">▶ Jogar Agora</button>
+        </div>
+
+        <div class="room-card" onclick="enterGame()">
+          <div class="room-card-header">
+            <div class="room-type-icon" style="background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.2);">🌊</div>
+            <div>
+              <div class="room-card-name">ULTRA PRO</div>
+              <div class="room-card-type">90 Bolas • VIP</div>
+            </div>
+          </div>
+          <div class="room-card-jackpot">R$ 258.000 <span>jackpot</span></div>
+          <div class="room-card-meta">
+            <div class="room-meta-item">👥 <strong>89</strong> jogadores</div>
+            <div class="room-meta-item">🎟 <strong>R$20,00</strong>/cartela</div>
+          </div>
+          <div class="room-countdown"><div class="room-countdown-dot"></div><span class="room-countdown-text">00:12:00</span><span style="font-size:11px;color:var(--text-muted);margin-left:4px">próxima rodada</span></div>
+          <button class="btn-play">▶ Jogar Agora</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME VIEW -->
+  <div id="game-view" class="game-area">
+
+    <!-- LEFT: CARTELAS -->
+    <div class="panel-left">
+      <div class="panel-header">
+        <div class="panel-title">Minhas Cartelas</div>
+        <div class="auto-dab-toggle">
+          <span>Auto-Dab</span>
+          <div class="toggle-switch"></div>
+        </div>
+      </div>
+      <div class="quick-buy">
+        <div class="buy-btn">+10</div>
+        <div class="buy-btn">+24</div>
+        <div class="buy-btn">+60</div>
+        <div class="buy-btn max">MAX</div>
+      </div>
+      <div class="cards-scroll" id="cards-container">
+        <!-- Cards generated by JS -->
+      </div>
     </div>
 
-    <script>
-        const games = [
-            { id: 1091500, title: "Cyberpunk 2077", desc: "Torne-se um fora da lei mercenário em Night City.", trailer: "https://cdn.akamai.steamstatic.com/steam/apps/256812831/movie480_vp9.webm", category: "populares" },
-            { id: 2358720, title: "Black Myth: Wukong", desc: "Domine as artes do Rei Macaco nesta jornada mística.", trailer: "https://cdn.akamai.steamstatic.com/steam/apps/256916212/movie480_vp9.webm", category: "populares" },
-            { id: 1174180, title: "Red Dead 2", desc: "A saga épica de Arthur Morgan no fim do Velho Oeste.", trailer: "https://cdn.akamai.steamstatic.com/steam/apps/256768370/movie480_vp9.webm", category: "populares" },
-            { id: 1086940, title: "Baldur's Gate 3", desc: "Reúna o seu grupo e regresse aos Reinos Esquecidos.", trailer: "https://cdn.akamai.steamstatic.com/steam/apps/256961917/movie480_vp9.webm", category: "populares" },
-            { id: 730, title: "Counter-Strike 2", desc: "A evolução do maior shooter tático do mundo.", trailer: "https://cdn.akamai.steamstatic.com/steam/apps/256965020/movie480_vp9.webm", category: "acao" },
-            { id: 1962660, title: "Warzone", desc: "Combate massivo em Battle Royale totalmente gratuito.", trailer: "https://cdn.akamai.steamstatic.com/steam/apps/256914594/movie480_vp9.webm", category: "acao" }
-        ];
+    <!-- CENTER: SORTEIO -->
+    <div class="panel-center">
+      <div class="room-info">
+        <div class="room-name">MEGA GALAXY</div>
+        <div class="room-badge"><div style="width:6px;height:6px;border-radius:50%;background:var(--neon-green);"></div>AO VIVO</div>
+        <div class="players-count">👥 <strong>1.247</strong> jogadores</div>
+        <div style="margin-left:8px;cursor:pointer;font-size:13px;color:var(--text-muted);border:1px solid var(--glass-border);padding:4px 10px;border-radius:6px;" onclick="showLobby()">← Voltar</div>
+      </div>
 
-        // Preencher os trilhos
-        function renderGames() {
-            games.forEach(game => {
-                const card = `
-                    <div class="game-card flex-none w-[280px] cursor-pointer" onclick="openModal(${game.id}, '${game.title}', '${game.desc}', '${game.trailer}')">
-                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg" class="rounded-md w-full object-cover h-[150px]">
-                    </div>
-                `;
-                if(game.category === 'populares') document.getElementById('trilho-populares').innerHTML += card;
-                else document.getElementById('trilho-acao').innerHTML += card;
-            });
-        }
+      <div class="countdown-widget">
+        <div class="countdown-label">⏱ Próxima bola em</div>
+        <div class="countdown-timer" id="next-ball-timer">00:08</div>
+      </div>
 
-        // Modal Logic
-        function openModal(id, title, desc, trailer) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalDesc').innerText = desc;
-            document.getElementById('modalVideo').src = trailer;
-            document.getElementById('downloadBtn').onclick = () => window.open(`https://store.steampowered.com/app/${id}`, '_blank');
-            document.getElementById('gameModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;width:260px;height:260px;">
+        <div class="globe-ring"></div>
+        <div class="globe-ring" style="width:290px;height:290px;"></div>
+        <div class="globe-outer">
+          <div class="current-ball" id="current-ball">
+            <div class="ball-letter" id="ball-letter">B</div>
+            <div class="ball-number" id="ball-number">7</div>
+          </div>
+        </div>
+      </div>
 
-        function closeModal() {
-            document.getElementById('gameModal').classList.add('hidden');
-            document.getElementById('modalVideo').pause();
-            document.body.style.overflow = 'auto';
-        }
+      <div class="ball-history" id="ball-history">
+        <!-- Generated by JS -->
+      </div>
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if(window.scrollY > 50) nav.style.backgroundColor = '#141414';
-            else nav.style.backgroundColor = 'transparent';
-        });
+      <div class="win-toast">🎉 Maria S. ganhou R$240 — Linha Dupla!</div>
 
-        renderGames();
-    </script>
+      <div class="prizes-panel">
+        <div class="prize-card">
+          <div class="prize-name">Linha</div>
+          <div class="prize-value">R$ 120</div>
+        </div>
+        <div class="prize-card active">
+          <div class="prize-name">⭐ Linha Dupla</div>
+          <div class="prize-value">R$ 340</div>
+        </div>
+        <div class="prize-card">
+          <div class="prize-name">🏆 Bingo</div>
+          <div class="prize-value">R$ 2.800</div>
+        </div>
+      </div>
+
+      <div class="prob-section">
+        <div class="prob-label">
+          <span>Probabilidade de Bingo</span>
+          <span class="prob-value" id="prob-value">67%</span>
+        </div>
+        <div class="prob-track">
+          <div class="prob-fill" id="prob-fill"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;width:100%;max-width:540px;">
+        <div style="flex:1;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;margin-bottom:4px;">BOLAS SORTEADAS</div>
+          <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--text-primary);" id="balls-drawn">24</div>
+        </div>
+        <div style="flex:1;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;margin-bottom:4px;">RESTANTES</div>
+          <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--neon-blue);" id="balls-left">66</div>
+        </div>
+        <div style="flex:1;background:var(--glass-bg);border:1px solid rgba(255,215,0,0.2);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text-muted);letter-spacing:1px;margin-bottom:4px;">MINHA MELHOR</div>
+          <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--neon-gold);">3/5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: CHAT + STATS -->
+    <div class="panel-right">
+      <div class="panel-tabs">
+        <div class="panel-tab active" onclick="switchTab(this,'chat-tab')">💬 Chat</div>
+        <div class="panel-tab" onclick="switchTab(this,'stats-tab')">📊 Stats</div>
+        <div class="panel-tab" onclick="switchTab(this,'rank-tab')">🏅 Ranking</div>
+      </div>
+
+      <!-- CHAT TAB -->
+      <div class="tab-content active" id="chat-tab">
+        <div class="chat-area" id="chat-area">
+          <!-- Messages -->
+          <div class="chat-msg">
+            <div class="chat-avatar host">H</div>
+            <div class="chat-content">
+              <div class="chat-name">Host Carlos <span class="host-badge">👑 HOST</span></div>
+              <div class="chat-text">Bem-vindos ao MEGA GALAXY! Boa sorte a todos! 🎰</div>
+              <div class="chat-time">21:04</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar" style="background:linear-gradient(135deg,#ff6b9d,#c44dff);">M</div>
+            <div class="chat-content">
+              <div class="chat-name">Maria_S</div>
+              <div class="chat-text">Alguém mais tá quase na linha? 😱</div>
+              <div class="chat-reactions">
+                <span class="reaction">❤️ 12</span>
+                <span class="reaction">🔥 8</span>
+              </div>
+              <div class="chat-time">21:05</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar" style="background:linear-gradient(135deg,#00d4ff,#0066ff);">J</div>
+            <div class="chat-content">
+              <div class="chat-name">JoaoBingo99</div>
+              <div class="chat-text">BINGO!!! 🎉🎉🎉 Que bola essa!</div>
+              <div class="chat-time">21:06</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar" style="background:linear-gradient(135deg,#00ff88,#007744);">L</div>
+            <div class="chat-content">
+              <div class="chat-name">LuckyLuisa</div>
+              <div class="chat-text">Tô precisando de B7 ou B12 pra fechar 🤞</div>
+              <div class="chat-time">21:07</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar host">H</div>
+            <div class="chat-content">
+              <div class="chat-name">Host Carlos <span class="host-badge">👑 HOST</span></div>
+              <div class="chat-text">Próxima bola em 5 segundos... suspense! 😄</div>
+              <div class="chat-time">21:07</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar" style="background:linear-gradient(135deg,#ffd700,#ff8c00);">P</div>
+            <div class="chat-content">
+              <div class="chat-name">ProPlayer_Pedro</div>
+              <div class="chat-text">Essas cartelas quentes são boas demais 🔥</div>
+              <div class="chat-reactions">
+                <span class="reaction">👍 5</span>
+              </div>
+              <div class="chat-time">21:08</div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input class="chat-input" placeholder="Mensagem para o chat..." id="chat-input-field">
+          <button class="send-btn" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+
+      <!-- STATS TAB -->
+      <div class="tab-content" id="stats-tab">
+        <div class="stats-content">
+          <div class="rtp-bar">
+            <div class="rtp-value">94.8%</div>
+            <div class="rtp-label">RTP EM TEMPO REAL (24H)</div>
+          </div>
+          <div>
+            <div class="stat-section-title">🔥 Números mais sorteados</div>
+            <div class="hot-numbers" id="hot-numbers"></div>
+          </div>
+          <div>
+            <div class="stat-section-title">❄️ Números menos sorteados</div>
+            <div class="hot-numbers" id="cold-numbers"></div>
+          </div>
+          <div style="background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:10px;padding:12px;">
+            <div class="stat-section-title" style="margin-bottom:8px;">📊 Distribuição BINGO</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-secondary);">B (1-15)</span><span style="color:#4fc3f7;font-family:'Space Mono',monospace;">38%</span></div>
+                <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;"><div style="height:100%;width:38%;background:#4fc3f7;border-radius:2px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-secondary);">I (16-30)</span><span style="color:#ce93d8;font-family:'Space Mono',monospace;">22%</span></div>
+                <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;"><div style="height:100%;width:22%;background:#ce93d8;border-radius:2px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-secondary);">N (31-45)</span><span style="color:var(--neon-gold);font-family:'Space Mono',monospace;">18%</span></div>
+                <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;"><div style="height:100%;width:18%;background:var(--neon-gold);border-radius:2px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-secondary);">G (46-60)</span><span style="color:var(--neon-green);font-family:'Space Mono',monospace;">14%</span></div>
+                <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;"><div style="height:100%;width:14%;background:var(--neon-green);border-radius:2px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-secondary);">O (61-75)</span><span style="color:#ff8a65;font-family:'Space Mono',monospace;">8%</span></div>
+                <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;"><div style="height:100%;width:8%;background:#ff8a65;border-radius:2px;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANKING TAB -->
+      <div class="tab-content" id="rank-tab">
+        <div class="stats-content">
+          <div class="ranking-list" id="ranking-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-item"><div class="status-dot"></div><span class="status-live">CONECTADO</span></div>
+  <div class="status-item">🌐 Servidor BR-1</div>
+  <div class="status-item">⚡ 12ms latência</div>
+  <div class="status-item">🔒 Jogo Seguro</div>
+  <div class="status-item">eCOGRA Certificado</div>
+  <div style="margin-left:auto;font-size:11px;color:var(--text-muted);">Jogo responsável · 18+ · T&C</div>
+</div>
+
+<!-- FLOATING REACTIONS -->
+<div class="floating-reactions" id="floating-reactions"></div>
+
+<script>
+  // ====== CARDS DATA ======
+  const BINGO_COLS = ['B','I','N','G','O'];
+  const COL_RANGES = [[1,15],[16,30],[31,45],[46,60],[61,75]];
+
+  function generateCard() {
+    let grid = [];
+    for (let c = 0; c < 5; c++) {
+      let [min, max] = COL_RANGES[c];
+      let nums = [];
+      while (nums.length < 5) {
+        let n = Math.floor(Math.random() * (max - min + 1)) + min;
+        if (!nums.includes(n)) nums.push(n);
+      }
+      grid.push(nums);
+    }
+    return grid;
+  }
+
+  const drawnNumbers = new Set([7, 22, 38, 4, 63, 11, 29, 51, 75, 14, 33, 46, 5, 68, 19, 42, 8, 55, 27, 71, 13, 36, 3, 60]);
+  const cards = [];
+
+  function renderCards() {
+    const container = document.getElementById('cards-container');
+    container.innerHTML = '';
+    for (let ci = 0; ci < 3; ci++) {
+      const grid = generateCard();
+      cards.push(grid);
+      const matchCount = countMatches(grid);
+      const isHot = matchCount >= 8;
+      const card = document.createElement('div');
+      card.className = 'bingo-card' + (isHot ? ' hot' : '');
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-id">#${String(100 + ci + 1)}</span>
+          <span class="card-progress">${matchCount}/25 marcados</span>
+        </div>
+        <div class="card-grid">
+          ${BINGO_COLS.map((l, ci2) => `<div class="card-col-header ${l}">${l}</div>`).join('')}
+          ${Array.from({length: 5}, (_, row) =>
+            BINGO_COLS.map((l, col) => {
+              if (row === 2 && col === 2) return `<div class="card-cell free">★</div>`;
+              const num = grid[col][row];
+              const isDabbed = drawnNumbers.has(num);
+              const isNear = isDabbed && isHot;
+              return `<div class="card-cell ${isDabbed ? (isNear ? 'near-win' : 'dabbed') : ''}">${num}</div>`;
+            }).join('')
+          ).join('')}
+        </div>
+      `;
+      container.appendChild(card);
+    }
+  }
+
+  function countMatches(grid) {
+    let count = 1; // free space
+    for (let c = 0; c < 5; c++) {
+      for (let r = 0; r < 5; r++) {
+        if (r === 2 && c === 2) continue;
+        if (drawnNumbers.has(grid[c][r])) count++;
+      }
+    }
+    return count;
+  }
+
+  // ====== BALL HISTORY ======
+  const ballLetterFor = (n) => n <= 15 ? 'b' : n <= 30 ? 'i' : n <= 45 ? 'n' : n <= 60 ? 'g' : 'o';
+
+  function renderBallHistory() {
+    const hist = document.getElementById('ball-history');
+    const drawn = [...drawnNumbers].slice(-10);
+    hist.innerHTML = drawn.map(n =>
+      `<div class="hist-ball ${ballLetterFor(n)}">${n}</div>`
+    ).join('');
+  }
+
+  // ====== HOT/COLD NUMBERS ======
+  function renderHotCold() {
+    const hotEl = document.getElementById('hot-numbers');
+    const coldEl = document.getElementById('cold-numbers');
+    const hot = [7, 14, 33, 51, 75, 22, 4, 8];
+    const cold = [2, 17, 44, 67, 73, 31, 58];
+    hotEl.innerHTML = hot.map(n => `<div class="hot-num hot">${n}</div>`).join('');
+    coldEl.innerHTML = cold.map(n => `<div class="hot-num cold">${n}</div>`).join('');
+  }
+
+  // ====== RANKING ======
+  const rankData = [
+    { name: 'LuckyLuisa', cards: 24, pos: 1 },
+    { name: 'ProPlayer_Pedro', cards: 18, pos: 2 },
+    { name: 'Maria_S', cards: 15, pos: 3 },
+    { name: 'JoaoBingo99', cards: 12, pos: 4 },
+    { name: 'BingoQueen_Ana', cards: 10, pos: 5 },
+    { name: 'Você', cards: 3, pos: 6 },
+  ];
+
+  function renderRanking() {
+    const el = document.getElementById('ranking-list');
+    el.innerHTML = rankData.map(r => {
+      const cls = r.pos === 1 ? 'gold' : r.pos === 2 ? 'silver' : r.pos === 3 ? 'bronze' : '';
+      const medal = r.pos === 1 ? '🥇' : r.pos === 2 ? '🥈' : r.pos === 3 ? '🥉' : r.pos;
+      const isYou = r.name === 'Você';
+      return `<div class="rank-item" style="${isYou ? 'border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.05)' : ''}">
+        <div class="rank-pos ${cls}">${medal}</div>
+        <div class="rank-name" style="${isYou ? 'color:var(--neon-blue)' : ''}">${r.name}${isYou ? ' 👤' : ''}</div>
+        <div class="rank-cards">${r.cards} cartelas</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ====== COUNTDOWN TIMER ======
+  let timeLeft = 8;
+  function updateTimer() {
+    const el = document.getElementById('next-ball-timer');
+    if (!el) return;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if (timeLeft <= 0) {
+      timeLeft = 10;
+      drawNewBall();
+    } else {
+      timeLeft--;
+    }
+  }
+
+  const ballSequence = [
+    { letter: 'B', num: 7 }, { letter: 'I', num: 22 }, { letter: 'N', num: 38 },
+    { letter: 'G', num: 51 }, { letter: 'O', num: 75 }, { letter: 'B', num: 14 },
+    { letter: 'I', num: 29 }, { letter: 'N', num: 33 }, { letter: 'G', num: 46 },
+    { letter: 'O', num: 63 }, { letter: 'B', num: 4 }, { letter: 'I', num: 19 },
+  ];
+  let ballIdx = 0;
+
+  function drawNewBall() {
+    const ball = ballSequence[ballIdx % ballSequence.length];
+    ballIdx++;
+    document.getElementById('ball-letter').textContent = ball.letter;
+    document.getElementById('ball-number').textContent = ball.num;
+    const currentBall = document.getElementById('current-ball');
+    const colors = { B: 'rgba(79,195,247,0.9)', I: 'rgba(206,147,216,0.9)', N: 'rgba(255,215,0,0.9)', G: 'rgba(0,255,136,0.8)', O: 'rgba(255,138,101,0.9)' };
+    currentBall.style.background = `radial-gradient(circle at 35% 35%, #fff5, ${colors[ball.letter]}, rgba(0,0,80,0.9))`;
+    currentBall.style.animation = 'none';
+    setTimeout(() => { currentBall.style.animation = 'ballFloat 3s ease-in-out infinite'; }, 50);
+
+    drawnNumbers.add(ball.num);
+    const drawn = drawnNumbers.size;
+    document.getElementById('balls-drawn').textContent = drawn;
+    document.getElementById('balls-left').textContent = 90 - drawn;
+    const prob = Math.min(95, Math.round(drawn / 90 * 140));
+    document.getElementById('prob-value').textContent = prob + '%';
+    document.getElementById('prob-fill').style.width = prob + '%';
+    renderBallHistory();
+    addChatWin();
+    spawnFloatingEmoji();
+  }
+
+  // ====== FLOATING EMOJIS ======
+  function spawnFloatingEmoji() {
+    if (Math.random() > 0.4) return;
+    const emojis = ['🎉','🔥','⭐','💥','🎯','🏆','✨','🎊'];
+    const el = document.createElement('div');
+    el.className = 'float-emoji';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 200 + 'px';
+    el.style.animationDelay = Math.random() * 0.5 + 's';
+    document.getElementById('floating-reactions').appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  // ====== CHAT ======
+  const chatMessages = [
+    { name: 'Gabi_Lucky', text: 'Queeee número foi esse!! 🔥', emoji: '❤️ 4' },
+    { name: 'FelipeBingo', text: 'Precisando só de mais 2!', emoji: '🎯 7' },
+    { name: 'Host Carlos', text: '🎉 Feliz para quem acertou!', isHost: true },
+    { name: 'CristinaVip', text: 'Já comprei mais 10 cartelas lol', emoji: '😂 12' },
+    { name: 'Robertao90', text: 'Vai cair o B7 agora eu sinto!', emoji: '🔥 3' },
+  ];
+  let chatMsgIdx = 0;
+
+  function addChatWin() {
+    if (Math.random() > 0.5) return;
+    const msg = chatMessages[chatMsgIdx % chatMessages.length];
+    chatMsgIdx++;
+    const area = document.getElementById('chat-area');
+    const colors = ['linear-gradient(135deg,#ff6b9d,#c44dff)', 'linear-gradient(135deg,#00d4ff,#0066ff)', 'linear-gradient(135deg,#00ff88,#007744)', 'linear-gradient(135deg,#ffd700,#ff8c00)', 'linear-gradient(135deg,#ff8a65,#ff5722)'];
+    const bg = msg.isHost ? 'linear-gradient(135deg,var(--neon-gold),#ff8c00)' : colors[Math.floor(Math.random() * colors.length)];
+    const el = document.createElement('div');
+    el.className = 'chat-msg';
+    el.innerHTML = `
+      <div class="chat-avatar ${msg.isHost ? 'host' : ''}" style="background:${bg}">${msg.name[0]}</div>
+      <div class="chat-content">
+        <div class="chat-name">${msg.name}${msg.isHost ? '<span class="host-badge">👑 HOST</span>' : ''}</div>
+        <div class="chat-text">${msg.text}</div>
+        ${msg.emoji ? `<div class="chat-reactions"><span class="reaction">${msg.emoji}</span></div>` : ''}
+        <div class="chat-time">${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}</div>
+      </div>
+    `;
+    area.appendChild(el);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  function sendChat() {
+    const input = document.getElementById('chat-input-field');
+    if (!input.value.trim()) return;
+    const area = document.getElementById('chat-area');
+    const el = document.createElement('div');
+    el.className = 'chat-msg';
+    el.innerHTML = `
+      <div class="chat-avatar" style="background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple))">J</div>
+      <div class="chat-content">
+        <div class="chat-name" style="color:var(--neon-blue)">Você</div>
+        <div class="chat-text">${input.value}</div>
+        <div class="chat-time">${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}</div>
+      </div>
+    `;
+    area.appendChild(el);
+    area.scrollTop = area.scrollHeight;
+    input.value = '';
+  }
+
+  document.getElementById('chat-input-field')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendChat();
+  });
+
+  // ====== TABS ======
+  function switchTab(el, tabId) {
+    document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // ====== VIEW SWITCHING ======
+  function enterGame() {
+    document.getElementById('lobby-view').classList.remove('active');
+    document.getElementById('game-view').classList.add('active');
+  }
+
+  function showLobby() {
+    document.getElementById('game-view').classList.remove('active');
+    document.getElementById('lobby-view').classList.add('active');
+  }
+
+  // ====== BALANCE TOGGLE ======
+  let balanceVisible = true;
+  function toggleBalance() {
+    balanceVisible = !balanceVisible;
+    document.getElementById('balance-label').textContent = balanceVisible ? 'R$ 1.284,50' : 'R$ ••••••';
+  }
+
+  // ====== LOBBY FILTER CHIPS ======
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // ====== JACKPOT COUNTER ======
+  let jackpot = 258340;
+  function incrementJackpot() {
+    jackpot += Math.floor(Math.random() * 50) + 10;
+    const el = document.getElementById('main-jackpot');
+    if (el) el.textContent = 'R$ ' + jackpot.toLocaleString('pt-BR');
+  }
+
+  // ====== INIT ======
+  renderCards();
+  renderBallHistory();
+  renderHotCold();
+  renderRanking();
+
+  setInterval(updateTimer, 1000);
+  setInterval(incrementJackpot, 3000);
+</script>
 </body>
 </html>
